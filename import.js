@@ -106,10 +106,14 @@ Import.prototype.parseFile = function (file) {
     data = whitespace(data);
   }
 
-  // Create AST and look for imports in imported code.
-  var opts = this.opts;
   this.map.push(load);
-  opts.map = this.map;
+  // Create AST and look for imports in imported code.
+  var opts = {
+    whitespace: this.opts.whitespace,
+    map: this.map,
+    path: path.dirname(load)
+  };
+  
   var ast = rework(data).use(module.exports(opts));
   return ast.obj.stylesheet;
 };
